@@ -1,0 +1,485 @@
+\documentclass{article}
+
+\usepackage[polish]{babel}
+\usepackage{minted}
+\usepackage[letterpaper,top=2cm,bottom=2cm,left=3cm,right=3cm,marginparwidth=1.75cm]{geometry}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage[colorlinks=true, allcolors=blue]{hyperref}
+\usepackage[T1]{fontenc}
+\usepackage[table,xcdraw]{xcolor}
+
+\title{MOwNiT - Arytmetyka komputerowa}
+\author{Jakub Frączek}
+
+\begin{document}
+\maketitle
+\section{Temat ćwiczenia}
+
+Wyznaczyć doświadczalnie parametry reprezentacji liczb zmiennoprzecinkowych
+(float, double, long double) i porównać uzyskane wartości dla różnych architektur,
+systemów operacyjnych i kompilatorów. Sprawdzić, czy reprezentacje są zgodne ze
+standardem IEEE.
+Parametry do wyznaczenia:
+\begin{itemize}
+\item liczba bajtów używana do przechowywania zmiennej danego typu,
+\item liczba bitów na mantysę,
+\item liczba bitów na cechę (wliczając znak),
+\item "maszynowe epsilon" - najmniejsza liczba, dla której 1.0+e > 1.0,
+\item  występowanie i sposób reprezentacji wartości specjalnych (±0, ±Inf, NaN).
+\end{itemize}
+
+\section{Dane techniczne}
+
+\subsection{Procesory, systemy operacyjne, architektury oraz kompilatory}
+
+\begin{itemize}
+
+\item Intel Core i5-9300H 2.40 GHz
+
+\begin{itemize}
+
+\item Windows 11 Home x64
+
+\begin{itemize}
+\item gcc 12.2.0 x64
+\item tcc 0.9.27 x64
+\item tcc 0.9.27 x32
+\end{itemize}
+
+\end{itemize}
+
+\item AMD Ryzen 5 5500U 2.1 GHz
+
+\begin{itemize}
+\item Linux Mint 21.2 x64
+\begin{itemize}
+\item gcc 11.4.0 x64
+\item gcc 11.4.0 x32
+\item tcc 0.9.27 x64
+\item clang 14.0.0 x64
+\item clang 14.0.0 x32
+\end{itemize}
+\end{itemize}
+
+\item Apple A12 Bionic 2.49GHz
+
+\begin{itemize}
+\item iPadOs 17.3.1 x64
+
+\begin{itemize}
+\item clang 14.0.0 x64 (zmodyfikowany; kompilacja do bytecodu -> interpretacja bytecodeu)
+\end{itemize}
+
+\end{itemize}
+
+\end{itemize}
+
+\subsection{Wykorzystany język oraz biblioteki}
+
+Doświadczenie zostało przeprowadzone z wykorzystaniem języka C. Wykorzystane biblioteki to:
+
+\begin{itemize}
+\item float.h
+\item stdio.h
+\item float.h
+\item math.h
+\item stdlib.h
+\end{itemize}
+
+\subsection{Funkcja do odczytu reprezentacji binarnej z pamięci}
+
+Poniżej (kod 1.) Znajduje się funkcja wykorzystywana do manualnego odczytu postaci binarnej liczby zmiennoprzecinkowej z pamięci.
+
+\begin{minted}[bgcolor=lightgray]{c}
+void print_bits ( void* buffer, int bytes, unsigned int mantissa_bits){   
+
+    if(sizeof(char) != 1){
+
+        printf("Char size != 1");
+        return;
+
+    }
+
+    int bit_counter = 0;
+    unsigned char* ptr = (unsigned char*)buffer;
+
+    for (int i = bytes - 1; i >= 0; i -= 1) {
+        
+        for (int j = 7; j >= 0; j--) {
+            
+            printf("%d", (ptr[i] >> j) & 1);
+            bit_counter += 1;
+
+            if(bit_counter == 1 || bit_counter == 1 + (bytes * 8)
+            - mantissa_bits) printf(" ");
+        }
+        
+    }
+    printf("\n");
+}
+\end{minted}
+\centerline{Kod 1. Funkcja do odczytu reprezentacji binarnej z pamięci}
+
+\subsection{Funkcja do wyznaczania maszynowego epsilon}
+
+Poniżej (kod 2.) Znajduje się funkcja wykorzystywana do wyznaczania maszynowego epsilon.
+
+\begin{minted}[bgcolor=lightgray]{c}
+int <variable_type>_epsilon() {
+    int pow = 0;
+    <variable_type> eps = 1;
+    while (eps + 1 != 1) {
+        eps /= 2;
+        --pow;
+    }
+    return pow + 1;
+}
+\end{minted}
+\centerline{Kod 2. Funkcja do wyznaczania maszynowego epsilon}
+
+\subsection{Funkcja do wyznaczania rozmiaru mantysy}
+
+Poniżej (kod 3.) Znajduje się funkcja wykorzystywana do wyznaczania rozmiaru mantysy.
+
+\begin{minted}[bgcolor=lightgray]{c}
+int <variable_type>_mantissa(){
+
+    <variable_type> a = 1;
+    <variable_type> b = 0.5;
+    <variable_type> c = a + b;
+    int bits = 1;
+    while (c != a) {
+        bits = bits + 1;
+        b = b / 2;
+        c = a + b;
+    }
+
+    return bits;
+
+}
+\end{minted}
+\centerline{Kod 3. Funkcja do wyznaczania rozmiaru mantysy}
+
+\subsection{Opis realizacji}
+Szukane wartości zostały wyznaczone poprzez odczytanie stałych zawartych w bibliotece <float.h>
+oraz poprzez skorzystanie z powyższych funkcji. 
+
+\section{Czym jest IEEE}
+
+Instytut Inżynierów Elektryków i Elektroników. Organizacja typu non-profit skupiająca osoby zawodowo związane z elektrycznością i elektroniką, a także pokrewnymi dziedzinami. Jednym z podstawowych jej zadań jest ustalanie standardów dla urządzeń elektronicznych, w tym standardów dla urządzeń i formatów komputerowych.
+
+\section{Standard IEEE 754}
+
+Jest to standard reprezentacji binarnej i operacji na liczbach zmiennoprzecinkowych, implementowany powszechnie w procesorach i oprogramowaniu obliczeniowym.
+
+\subsection{Zapis liczb zmiennoprzecinkowych}
+
+\centerline{\(L = \mathrm{(-1)}_{}^{znak}*mantysa*\mathrm{2}_{}^{cecha}\)}
+\bigbreak
+\begin{itemize}
+\item znak - 0 oznacza liczbę dodatnią, 1 ujemną
+\item mantysa - wpływa na precyzję
+\item cecha - wpływa na zakres
+\end{itemize}
+
+\subsection{Normalizacja mantysy}
+
+Polega na zwiększaniu potęgi wykładnika i przesuwaniu przecinka w lewo, aż liczba będzie należeć do przedziału [1, 2).
+
+\subsection{Przesunięcie wykładnika}
+
+Bias jest to przesunięcie pozwalające na zapis ujemnego wykładnika. Typowe wartości przesunięcia to:
+
+\begin{itemize}
+\item 127 w formacie 32-bitowym,
+\item 1023 w formacie 64-bitowym,
+\item 16383 w formacie 80-bitowym.
+\end{itemize}
+
+\subsection{Liczby znormalizowane}
+
+
+\centerline{\(L = \mathrm{(-1)}_{}^{znak}*1.mantysa*\mathrm{2}_{}^{cecha - bias}\)}
+\bigbreak
+Mantysa ma wartość z przedziału [1,2) - pierwszy bit ma zawsze wartość 1 (ukryta 1), więc nie trzeba go zapisywać (jest on tam "domyślnie"). 
+
+\bigbreak
+\noindent
+Przykład liczby znormalizowanej (Kod 4.):
+
+\begin{minted}[bgcolor=lightgray]{c}
+float number1 = 3.9;
+print_bits(&number1, sizeof(float), FLT_MANT_DIG);
+
+output: 0 10000000 11110011001100110011010
+\end{minted}
+\centerline{Kod 4. Uruchomiony z wykorzystaniem: Intel Core i5-9300H 2.40 GHz, Windows 11 Home x64, gcc 12.2.0}
+
+
+\subsection{ Liczby zdenormalizowane}
+
+\centerline{\(L = \mathrm{(-1)}_{}^{znak}*0.mantysa*\mathrm{2}_{}^{-bias + 1}\)}
+\bigbreak
+
+Przykład liczby zdenormalizowanej (Kod 5.):
+
+\begin{minted}[bgcolor=lightgray]{c}
+float number2 = 1e-39;
+    print_bits(&number2, sizeof(float), FLT_MANT_DIG);
+    
+output: 0 00000000 00010101110001110011000
+\end{minted}
+\centerline{Kod 5.  Uruchomiony z wykorzystaniem: Intel Core i5-9300H 2.40 GHz, Windows 11 Home x64, gcc 12.2.0}
+\bigbreak
+\noindent
+Jeżeli cecha składa się z samych 0 to liczba jest zdenormalizowana i mantysa nie posiada "domyślnego" bitu. Pozwala to na reprezentacje liczb bliskich 0, które bez denormalizacji byłyby 0.
+
+\subsection{Parametry reprezentacji liczb zmiennoprzecinkowych}
+
+Poniżej (w tabeli 1.) przedstawione są parametry reprezentacji liczb zmiennoprzecinkowych zawarte w standardzie IEEE 754.
+
+% Please add the following required packages to your document preamble:
+% \usepackage[table,xcdraw]{xcolor}
+% Beamer presentation requires \usepackage{colortbl} instead of \usepackage[table,xcdraw]{xcolor}
+\begin{table}[h]
+\centering
+\begin{tabular}{|l|l|l|l|l|l|}
+\hline
+Nazwa  & Typ     & Znak  & Cecha    & Mantysa & Maszynowe epsilon                                              \\ \hline
+float  & 32 bity & 1 bit & 8 bitów  & 23 bity & \cellcolor[HTML]{F8F9FA}{\color[HTML]{202122} 1.19e-07} \\ \hline
+double & 64 bity & 1 bit & 11 bitów & 52 bity & \cellcolor[HTML]{F8F9FA}{\color[HTML]{202122} 2.22e-16} \\ \hline
+long double & 128 bitów & 1 bit & 15 bitów & 112 bitów & \cellcolor[HTML]{F8F9FA}{\color[HTML]{202122} 1.93e-34} \\ \hline
+\end{tabular}
+\end{table}
+\centerline{Tabela 1. Parametry reprezentacji liczb zmiennoprzecinkowych}
+
+\subsection{Specjalne przypadki}
+
+\begin{itemize}
+\item +0 - wszystkie bity są zerami
+\item -0 - bit znaku jest ustawiony, reszta jest zerami
+\item NaN - ustawione wszystkie bity wykładnika, mantysa różna od 0
+\item +inf  - bit znaku jest zerem, ustawione wszystkie bity wykładnika, mantysa równa 0
+\item -inf - bit znaku jest ustawiony, ustawione wszystkie bity wykładnika, mantysa równa 0
+\end{itemize}
+
+
+\section{Wyniki}
+
+\subsection{Float}
+
+Dla każdego przeprowadzonego testu, na wszystkich konfiguracjach opisanych w sekcji 2.1 otrzymany wynik został zaprezentowany w tabeli 2.
+
+\begin{table}[!ht]
+    \centering
+    \begin{tabular}{|l|l|l|l|}
+    \hline
+        Liczba bitów & Liczba bitów mantysy & Liczba bitów cechy (wliczając znak) & Maszynowe epsilon  \\ \hline
+        32 & 24 & 8 & 1.192093e-07 \\ \hline
+    \end{tabular}
+\end{table}
+\centerline{Tabela 2. Wyniki testów przeprowadzonych dla zmiennej float}
+
+\subsection{Double}
+
+Dla każdego przeprowadzonego testu, na wszystkich konfiguracjach opisanych w sekcji 2.1 otrzymany wynik został zaprezentowany w tabeli 3.
+
+\begin{table}[!ht]
+    \centering
+    \begin{tabular}{|l|l|l|l|}
+    \hline
+        Liczba bitów & Liczba bitów mantysy & Liczba bitów cechy (wliczając znak) & Maszynowe epsilon  \\ \hline
+        64 & 53 & 11 & 2.22045e-16 \\ \hline
+    \end{tabular}
+\end{table}
+
+\centerline{Tabela 3. Wyniki testów przeprowadzonych dla zmiennej double}
+
+\subsection{Long double}
+
+Dla tego typu zmiennej wyniki okazały się być bardzo zróżnicowane. Zauważyłem też, że w niektórych przypadkach wartości podane w stałych zawartych w "float.h" różnią się od rzeczywistych. Wartość w nawiasie odzwierciedla niepoprawną wartość odczytaną ze stałej, bądź przy użyciu funckji sizeof().
+
+\subsubsection{Wynik I}
+
+Dla:
+
+\begin{itemize}
+\item Intel Core i 5 Intel Core i5-9300H 2.40 GHz; Windows 11 Home x64; gcc 12.2.0 x64
+\item AMD Ryzen 5 5500U 2.1 GHz; Linux Mint 21.2 x64; gcc 11.4.0 x64
+\item AMD Ryzen 5 5500U 2.1 GHz; Linux Mint 21.2 x64; tcc 0.9.27 x64
+\item AMD Ryzen 5 5500U 2.1 GHz; Linux Mint 21.2 x64; clang 14.0.0 x64
+\end{itemize}
+
+Otrzymałem (tabela 4.):
+
+\begin{table}[!ht]
+    \centering
+    \begin{tabular}{|l|l|l|l|}
+    \hline
+        Liczba bitów & Bity mantysy & Bity cechy (wliczając znak) & Maszynowe epsilon  \\ \hline
+        80 (128) & 64 & 16 (64) & 1.084202e-19 \\ \hline
+    \end{tabular}
+\end{table}
+
+\centerline{Tabela 4. Wybrane wyniki dla zmiennej long double}
+\bigbreak
+
+\noindent
+Liczba w nawiasie w kolumnie "Liczba bitów" oznacza liczbę otrzymaną poprzez użycie funkcji sizeof(), jednak po odczytaniu wartości z pamięci okazuje się, że znajduje się tam, aż 48 zaalokowanych, jednak nie używanych bitów. Najprawdopodobniej dzieje się tak najprawdopodobiej ze względu na proces zwany "bit aligmnent" (obiekt jest "8 bits aligned" jeśli rozmiar jego pamięci jest wielokrotnością 8. Niektóre procesory czytają tylko pamięć, która jest taką liczbą, a dla innych przyspiesza to czas odczytu).
+
+\subsubsection{Wynik II}
+
+Dla:
+
+\begin{itemize}
+\item Intel Core i 5 Intel Core i5-9300H 2.40 GHz; Windows 11 Home x64; tcc 0.9.27 x64
+\item Intel Core i 5 Intel Core i5-9300H 2.40 GHz; Windows 11 Home x64; tcc 0.9.27 x32
+\end{itemize}
+\bigbreak
+Otrzymałem (tabela 5):
+
+\begin{table}[!ht]
+    \centering
+    \begin{tabular}{|l|l|l|l|}
+    \hline
+        Liczba bitów & Bity mantysy & Bity cechy (wliczając znak) & Maszynowe epsilon  \\ \hline
+        64 & 53 (64) & 11(0) & 2.22045e-016 (1.084202e-019) \\ \hline
+    \end{tabular}
+\end{table}
+
+\centerline{Tabela 5. Wybrane wyniki dla zmiennej long double}
+\bigbreak
+
+\noindent
+W tym wypadku, w stałej LDBL\_MANT\_DIG znajdowała się niepoprawna wartość reprezentująca ilość bitów mantysy, po zweryfikowaniu okazało się, że jest ich 53, a nie 64; co byłoby z resztą nie możliwe przy rozmiarze long double wynoszącym 64 bity. Zła była także wartość maszynowego epsilon.
+
+\subsubsection{Wynik III}
+
+Dla:
+\begin{itemize}
+\item Apple A12 Bionic 2.49GHz; iPadOs 17.3.1 x64; clang 14.0.0 x64 (Zmodyfikowany)
+\end{itemize}
+
+Otrzymałem (tabela 6.):
+
+\begin{table}[!ht]
+    \centering
+    \begin{tabular}{|l|l|l|l|}
+    \hline
+        Liczba bitów & Bity mantysy & Bity cechy (wliczając znak) & Maszynowe epsilon  \\ \hline
+        64 & 53 & 11 & 2.22045e-016 \\ \hline
+    \end{tabular}
+\end{table}
+
+\centerline{Tabela 6. Wybrane wyniki dla zmiennej long double}
+\bigbreak
+
+Tutaj wynik jest podobny jak powyżej, z tą różnicą, że wszystkie wartości w "float.h" były zgodne z rzeczywistością. 
+
+\subsubsection{Wynik IV}
+
+Dla:
+\begin{itemize}
+\item AMD Ryzen 5 5500U 2.1 GHz; Linux Mint 21.2 x64; gcc 11.4.0 x32
+\item AMD Ryzen 5 5500U 2.1 GHz; Linux Mint 21.2 x64; clang 14.0.0 x32
+\end{itemize}
+
+Otrzymałem (tabela 7.):
+
+\begin{table}[!ht]
+    \centering
+    \begin{tabular}{|l|l|l|l|}
+    \hline
+        Liczba bitów & Bity mantysy & Bity cechy (wliczając znak) & Maszynowe epsilon  \\ \hline
+        96 & 64 & 32 & 1.084202e-19 \\ \hline
+    \end{tabular}
+\end{table}
+
+\centerline{Tabela 7. Wybrane wyniki dla zmiennej long double}
+\bigbreak
+
+W tym wypadku mamy do czynienia z największą liczbą bitów przeznaczonych do zapisu zmiennej long double.
+
+\subsection{Wartości specjalne}
+
+Wartości specjalne w prawie każdym przypadku były przechowywane w identyczny sposób.
+
+\subsubsection{+0}
+
+Na wszystkich konfiguracjach w postaci:
+\begin{itemize}
+\item bit znaku: "0"
+\item mantysa: same "0"
+\item cecha: same "0"
+\end{itemize}
+
+\subsubsection{-0}
+
+Na wszystkich konfiguracjach w postaci:
+\begin{itemize}
+\item bit znaku: "1"
+\item mantysa: same "0"
+\item cecha: same "0"
+\end{itemize}
+
+\subsubsection{+Inf}
+
+Na wszystkich konfiguracjach w postaci:
+\begin{itemize}
+\item bit znaku: "0"
+\item mantysa: same "1"
+\item cecha: same "0"
+\end{itemize}
+
+\subsubsection{-Inf}
+
+Na wszystkich konfiguracjach w postaci:
+\begin{itemize}
+\item bit znaku: "1"
+\item mantysa: same "1"
+\item cecha: same "0"
+\end{itemize}
+
+\subsection{NaN}
+
+Na konfiguracjach z kompilatorem tcc:
+\begin{itemize}
+\item bit znaku: "1"
+\item mantysa: same "1"
+\item cecha: jedna "1", reszta "0"
+\end{itemize}
+
+Na konfiguracjach bez kompilatora tcc:
+\begin{itemize}
+\item bit znaku: "0"
+\item mantysa: same "1"
+\item cecha: jedna "1", reszta "0"
+\end{itemize}
+
+\section{Wnioski}
+
+\begin{itemize}
+
+\item Po przeprowadzonej analizie można stwierdzić, że wszystkie przetestowane przeze mnie konfiguracje są zgodne ze standardem IEEE 754. Jeśli chodzi long double to nie jest on w nim przewidziany, więc jego implementacje się różnią.
+\item Po porzeczytaniu danych z sekcji 5.3.2 oraz 5.3.3 można dojść do wniosku, że typ long double został tam zrealizowany jako zwykły double.
+\item Nie należy polegać na typie danych long double, gdyż implementacja znacząco się różni w zależności od procesora, systemu oraz kompilatora.
+\item Dodając ":i386" do nazwy pakietu instalowanego przy pomocy unixowego apt można uzyskać jego 32 bitową wersję (w przypadku korzystania z 64 bitowego sytemu).
+\item System iPadOs nie pozwala na uruchamianie kodu niepochodzącego z dedykowanego sklepu, stąd kompilator clang został zmodyfikowany (przez dewelopera, który udostępnił go w App Store), tak by kod był kompilowany do bytecode'u na następnie interpretowany, co pozwoliło obejść restrykcje.
+
+\end{itemize}
+
+
+\section{Źródła}
+
+\begin{itemize}
+\item https://pl.wikipedia.org/wiki/Liczba\_zmiennoprzecinkowa
+\item https://pl.wikipedia.org/wiki/Kod\_z\_przesuni\%C4\%99ciem
+\item https://en.wikipedia.org/wiki/Machine\_epsilon
+\item https://stackoverflow.com/questions/2846914/what-is-meant-by-memory-is-8-bytes-aligned
+\item https://en.wikipedia.org/wiki/IEEE\_754
+\item https://askubuntu.com/questions/29665/how-do-i-apt-get-a-32-bit-package-on-a-64-bit-installation
+\end{itemize}
+
+
+\end{document}
