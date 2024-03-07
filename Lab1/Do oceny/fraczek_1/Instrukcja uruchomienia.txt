@@ -1,0 +1,2 @@
+Pliki lab1_double.c, lab1_float.c, lab1_long_double.c oraz lab1_zdenormalizowane_znormalizowane.c
+nie stanowią całości i należy je uruchamiać osobno. Programy korzystają ze standardowych bibliotek, jedyne co należy zrobić to je skompilować np. za pomoną gcc (gcc <nazwa_pliku>) oraz uruchomić (./a.exe).

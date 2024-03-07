@@ -8,8 +8,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": true,
-      "cwd": "c:/Users/48667/Documents/AGH UST/Semestr4/MOwNiT",
-      "program": "c:/Users/48667/Documents/AGH UST/Semestr4/MOwNiT/build/Debug/outDebug",
+      "cwd": ".",
+      "program": "build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [
