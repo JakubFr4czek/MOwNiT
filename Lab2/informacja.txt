@@ -1,0 +1,3 @@
+Całość programu znajduje się w notatniku jupytera, aby go uruchomić należy zainstalować
+wymienione w sprawozdaniu biblioteki, a następnie w edytorze kliknąć przycisk run all
+lub uruchomić pojedynczo wszystkie komórki.
