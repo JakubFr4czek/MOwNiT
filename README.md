@@ -1,15 +1,14 @@
 # MOwNiT
 
-repozytorium zawiera rozwiązania zadań z przedmiotu Metody Obliczeniowe w Nauce i Technice
+Repozytorium zawiera rozwiązania zadań z przedmiotu Metody Obliczeniowe w Nauce i Technice.
 
-## [Arytmetyka komputerowa](./lab1)
+## [Lab 1 - Arytmetyka komputerowa](./lab1)
 
-
-## [Interpolacja Lagrange'a i Newtona](./lab2a)
-
-
-## [Interpolacja Hermite'a](./lab2b)
+## [Lab 2a - Interpolacja Lagrange'a i Newtona](./lab2a)
 
 
-## [Funkcje sklejane (Linowe, kwadratowe, sześcienne)](./lab3)
+## [Lab 2b - Interpolacja Hermite'a](./lab2b)
+
+
+## [Lab 3 - Funkcje sklejane (Linowe, kwadratowe, sześcienne)](./lab3)
 
