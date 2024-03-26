@@ -2,14 +2,14 @@
 
 repozytorium zawiera rozwiązania zadań z przedmiotu Metody Obliczeniowe w Nauce i Technice
 
-## [lab1](./lab1)
-Arytmetyka komputerowa
+## [Arytmetyka komputerowa](./lab1)
 
-## [lab2a](./lab2a)
-Interpolacja Lagrange'a i Newtona
 
-## [lab2b](./lab2b)
-Interpolacja Hermite'a
+## [Interpolacja Lagrange'a i Newtona](./lab2a)
 
-## [lab3](./lab3)
-Funkcje sklejane (Linowe, kwadratowe, sześcienne)
+
+## [Interpolacja Hermite'a](./lab2b)
+
+
+## [Funkcje sklejane (Linowe, kwadratowe, sześcienne)](./lab3)
+
