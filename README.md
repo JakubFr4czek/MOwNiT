@@ -1,4 +1,4 @@
-# MOwNiT
+# MOwNiT - Metody Obliczeniowe w Nauce i Technice
 
 Repozytorium zawiera rozwiązania zadań z przedmiotu Metody Obliczeniowe w Nauce i Technice.
 
