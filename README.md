@@ -17,3 +17,6 @@ Repozytorium zawiera rozwiązania zadań z przedmiotu Metody Obliczeniowe w Nauc
 ## Laboratorium 3
 [Funkcje sklejane (Linowe, kwadratowe, sześcienne)](./Lab3)
 
+## Laboratorium 4
+[Aproksymacja średniokwadratowa](./Lab4)
+
