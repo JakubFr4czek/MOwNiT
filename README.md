@@ -17,6 +17,9 @@ Repozytorium zawiera rozwiązania zadań z przedmiotu Metody Obliczeniowe w Nauc
 ## Laboratorium 3
 [Funkcje sklejane (Linowe, kwadratowe, sześcienne)](./Lab3)
 
-## Laboratorium 4
-[Aproksymacja średniokwadratowa](./Lab4)
+## Laboratorium 4a
+[Aproksymacja wielomianowa średniokwadratowa](./Lab4a)
+
+## Laboratorium 4a - zla aproksymacja
+[Aproksymacja wielomianowa średniokwadratowa, ale funkcja aproksymująca zawiera błąd](./Lab4a_zla_aproksymacja)
 
