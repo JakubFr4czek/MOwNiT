@@ -23,3 +23,6 @@ Repozytorium zawiera rozwiązania zadań z przedmiotu Metody Obliczeniowe w Nauc
 ## Laboratorium 4a - zla aproksymacja
 [Aproksymacja wielomianowa średniokwadratowa, ale funkcja aproksymująca zawiera błąd](./Lab4a_zla_aproksymacja)
 
+## Laboratorium 4b
+[Aproksymacja trygonometryczna](./Lab4b)
+
