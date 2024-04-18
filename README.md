@@ -2,7 +2,7 @@
 
 Repozytorium zawiera rozwiązania zadań z przedmiotu Metody Obliczeniowe w Nauce i Technice.
 
-## Laboratorium 1
+## Laboratorium 1 (9.5 / 10.0)
 [Arytmetyka komputerowa](./Lab1)
 
 ## Laboratorium 2a
