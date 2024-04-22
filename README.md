@@ -26,3 +26,6 @@ Repozytorium zawiera rozwiązania zadań z przedmiotu Metody Obliczeniowe w Nauc
 ## Laboratorium 4b
 [Aproksymacja trygonometryczna](./Lab4b)
 
+## Laboratorium 4c
+[Porównanie metod interpolacji i aproksymacji](./Lab4c)
+
