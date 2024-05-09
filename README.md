@@ -5,7 +5,7 @@ Repozytorium zawiera rozwiązania zadań z przedmiotu Metody Obliczeniowe w Nauc
 ## Laboratorium 1 (9.5 / 10.0)
 [Arytmetyka komputerowa](./Lab1)
 
-## Laboratorium 2a
+## Laboratorium 2a (8.0 / 10.0)
 [Interpolacja Lagrange'a i Newtona](./Lab2a)
 
 ## Laboratorium 2b 
@@ -26,6 +26,7 @@ Repozytorium zawiera rozwiązania zadań z przedmiotu Metody Obliczeniowe w Nauc
 ## Laboratorium 4b
 [Aproksymacja trygonometryczna](./Lab4b)
 
-## Laboratorium 4c
-[Porównanie metod interpolacji i aproksymacji (Uwaga mogą być błedy po pisałem to ledwo przytomny przez noc)](./Lab4c)
+## Laboratorium 5
+[Rozwiązywanie równań i układów równań nieliniowych metodą siecznych i metodą Newtona](./Lab5)
+
 
