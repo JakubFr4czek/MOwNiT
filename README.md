@@ -30,3 +30,5 @@ Repozytorium zawiera rozwiązania zadań z przedmiotu Metody Obliczeniowe w Nauc
 [Rozwiązywanie równań i układów równań nieliniowych metodą siecznych i metodą Newtona](./Lab5)
 
 
+## Laboratorium 6
+[Rozwiązywanie układów równań liniowych metodą Gaussa](./Lab6)
