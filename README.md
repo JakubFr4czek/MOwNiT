@@ -8,7 +8,7 @@ Repozytorium zawiera rozwiązania zadań z przedmiotu Metody Obliczeniowe w Nauc
 ## Laboratorium 2a (8.0 / 10.0)
 [Interpolacja Lagrange'a i Newtona](./Lab2a)
 
-## Laboratorium 2b 
+## Laboratorium 2b (8.5 / 10.0)
 [Interpolacja Hermite'a](./Lab2b)
 
 ## Laboratorium 2c
@@ -34,3 +34,6 @@ Repozytorium zawiera rozwiązania zadań z przedmiotu Metody Obliczeniowe w Nauc
 
 ## Laboratorium 6
 [Rozwiązywanie układów równań liniowych metodą Gaussa](./Lab6)
+
+## Laboratorium 7   
+[Rozwiązywanie układów równań liniowych metodą Thomasa](./Lab7)
