@@ -33,7 +33,7 @@ Repozytorium zawiera rozwiązania zadań z przedmiotu Metody Obliczeniowe w Nauc
 [Rozwiązywanie równań i układów równań nieliniowych metodą siecznych i metodą Newtona](./Lab5)
 
 ## Laboratorium 6
-[Rozwiązywanie układów równań liniowych metodą Gaussa](./Lab6)
+[Rozwiązywanie układów równań liniowych metodą Gaussa i Thomasa](./Lab6)
 
 ## Laboratorium 7   
-[Rozwiązywanie układów równań liniowych metodą Thomasa](./Lab7)
+[Rozwiązywanie układów równań metodą iteracyjną Jacobiego](./Lab7)
