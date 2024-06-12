@@ -11,7 +11,7 @@ Repozytorium zawiera rozwiązania zadań z przedmiotu Metody Obliczeniowe w Nauc
 ## Laboratorium 2b (8.5 / 10.0)
 [Interpolacja Hermite'a](./Lab2b)
 
-## Laboratorium 2c
+## Laboratorium 2c (8.0 / 10.0)
 [Sprawozdanie z interpolacji Lagrange'a, Newtona i Hermite'a](./Lab2c)
 
 ## Laboratorium 3 (7.0 / 10.0)
