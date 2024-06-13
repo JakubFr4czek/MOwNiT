@@ -1,0 +1,1 @@
+Cały kod programu znajduje się w pliku fraczek_7.ipynb. Do jego uruchomienia potrzebny jest interpreter języka python wraz z zainstalowanymi modułami podanymi w sprawozdaniu oraz jupyter notebook'u.
